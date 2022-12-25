@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Homework</title>
+</head>
+
+<body>
+  <!--
+Необязательное задание, но желательно сделать.
+
+Необходимо данное задание выполнить в es5 стиле и в es6 стиле.
+Необходимо создать функцию-конструктор/класс для поста в социальной сети.
+Названия: `PostES5` для es5 стиля и `PostES6` для es6 стиля.
+Пост должен хранить:
+1. Автора поста (имени достаточно).
+2. Текст поста.
+3. Дату и время последнего изменения поста.
+Данные автора поста и текст поста необходимо передавать при создании
+экземпляра объекта.
+Каждому экземпляру объекта должен быть доступен метод `edit`, который будет
+менять текст поста.
+
+---
+
+Необходимо создать функцию-конструктор/класс для закрепленного поста в
+социальной сети.
+Названия: `AttachedPostES5` для es5 стиля и `AttachedPostES6` для es6 стиля.
+Закрепленный пост должен наследоваться от обычного поста.
+Данные автора поста и текст поста необходимо передавать при создании
+экземпляра объекта.
+Закрепленный пост должен иметь свойство `highlighted`, в котором по умолчанию
+будет лежать значение false (это свойство будет обозначать, будет ли наш
+закрепленный пост подсвечен).
+У экземпляров объекта закрепленного поста должен быть метод с названием
+`makeTextHighlighted`, который сделает так, чтобы наш пост стал подсвеченным
+(будет менять свойство `highlighted`).
+
+---
+
+Подсказки:
+1. Задание сложное, советую делать по аналогии с примером на онлайн-занятии.
+2. Обратите внимание что пост хранит "дату и время последнего изменения
+поста", это значит что если пост кто-то изменит (например вызовет какой-то
+метод, который изменит что-то в посте), дата и время последнего изменения
+поста также должна измениться.
+3. Выполняйте все по порядку, не стоит пытаться сделать все сразу, иначе можно
+что-нибудь пропустить.
+4. Если непонятно условие - задайте вопрос.
+-->
+  <script>
+    "use strict";
+
+    // ES5 - пост в социальной сети
+    function PostES5(author, text) {
+      this.author = author;
+      this.text = text;
+      this.last_change_date = new Date();
+    }
+
+    PostES5.prototype.edit = function (text) {
+      this.text = text;
+      this.last_change_date = new Date(Date.now());
+    }
+
+    function AttachedPostES5(author, text) {
+      PostES5.call(this, author, text);
+      this.highlighted = false;
+    }
+
+    AttachedPostES5.prototype = Object.create(PostES5.prototype);
+    AttachedPostES5.prototype.constructor = AttachedPostES5;
+
+    AttachedPostES5.prototype.makeTextHighlighted = function () {
+      return this.highlighted = true;
+    }
+
+
+    const post1 = new PostES5('Tatyana', 'Hello my dear friends!');
+    console.log(post1);
+    post1.edit(prompt('please enter new text for simple post!'));
+    console.log(post1);
+
+    const post_attached1 = new AttachedPostES5('Ivan', 'My congratulations!');
+    console.log(post_attached1);
+    post_attached1.makeTextHighlighted();
+    console.log(post_attached1);
+    post_attached1.edit(prompt('измените текст закреппленного поста'));
+    console.log(post_attached1);
+
+
+    // ES6 - пост в социальной сети
+
+    class PostES6 {
+      constructor(author, text) {
+        this.author = author;
+        this.text = text;
+        this.last_change_date = new Date();
+      }
+
+      edit(text) {
+        this.text = text;
+        this.last_change_date = new Date(Date.now());
+      }
+    }
+
+    class AttachedPostES6 extends PostES6 {
+      constructor(author, text, last_change_date) {
+        super(author, text, last_change_date);
+        this.highlighted = false;
+
+      }
+
+      makeTextHighlighted() {
+        this.highlighted = true;
+        return this.highlighted;
+      }
+
+
+    }
+
+    const newPostES6 = new PostES6('Sergey', 'I live in Moscow');
+    console.log(newPostES6);
+
+    const newAttachedPostES6 = new AttachedPostES6('Darya', 'here must be my text for attached post');
+    console.log(newAttachedPostES6);
+
+    newPostES6.edit(prompt('new text for simple post'));
+    console.log(newPostES6);
+
+    newAttachedPostES6.makeTextHighlighted();
+    console.log(newAttachedPostES6);
+
+    newAttachedPostES6.edit(prompt('new text for attached post'));
+    console.log(newAttachedPostES6);
+
+  </script>
+</body>
+
+</html>
